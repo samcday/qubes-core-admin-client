@@ -27,6 +27,7 @@ import os
 import shlex
 import socket
 import shutil
+import stat
 import subprocess
 import sys
 
@@ -664,6 +665,19 @@ class QubesLocal(QubesBase):
     """
 
     qubesd_connection_type = 'socket'
+
+    @staticmethod
+    def check_socket():
+        """
+        :return: if the qubesd socket exists (bool)
+        """
+        try:
+            mode = os.stat(qubesadmin.config.QUBESD_SOCKET).st_mode
+            return stat.S_ISSOCK(mode)
+        except FileNotFoundError:
+            pass
+        return False
+
 
     def qubesd_call(self, dest, method, arg=None, payload=None,
                     payload_stream=None):

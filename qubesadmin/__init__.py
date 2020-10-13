@@ -20,15 +20,13 @@
 
 '''Qubes OS management client.'''
 
-import os
-
 import qubesadmin.config
 import qubesadmin.base
 import qubesadmin.app
 
 DEFAULT = qubesadmin.base.DEFAULT
 
-if os.path.exists('/etc/qubes-release'):
+if qubesadmin.app.QubesLocal.check_socket():
     Qubes = qubesadmin.app.QubesLocal
 else:
     Qubes = qubesadmin.app.QubesRemote
